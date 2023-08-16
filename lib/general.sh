@@ -205,7 +205,7 @@ select_distro()
 				;;
 			"1") 
 				DISTRO="xenial"
-				DISTRO_NUM="16.04.1"
+				DISTRO_NUM="16.04.6"
 	                     	OS="ubuntu"
 				;;
 		 	"2")     
