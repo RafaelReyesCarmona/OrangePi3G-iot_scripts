@@ -75,13 +75,21 @@ prepare_host()
 		        exit 1
 	fi
 
-	apt-get -y --no-install-recommends --fix-missing install \
-		        libarchive-tools mtools u-boot-tools pv bc \
-		        gcc automake make binfmt-support flex \
-		        lib32z1 lib32z1-dev qemu-user-static bison \
-		        dosfstools libncurses5-dev debootstrap \
-		        swig libpython2.7-dev libssl-dev python2-minimal dos2unix \
-	  		lib32gcc-s1 lib32stdc++6
+        if [ $( grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
+                apt-get -y --no-install-recommends --fix-missing install \
+                        bsdtar mtools u-boot-tools pv bc \
+                        gcc automake make binfmt-support flex \
+                        lib32z1 lib32z1-dev qemu-user-static bison \
+                        dosfstools libncurses5-dev debootstrap \
+                        swig libpython2.7-dev libssl-dev python-minimal dos2unix;
+        else
+                apt-get -y --no-install-recommends --fix-missing install \
+                        libarchive-tools mtools u-boot-tools pv bc \
+                        gcc automake make binfmt-support flex \
+                        lib32z1 lib32z1-dev qemu-user-static bison \
+                        dosfstools libncurses5-dev debootstrap \
+                        swig libpython2.7-dev libssl-dev python2-minimal dos2unix;
+        fi
 
 	# Prepare toolchains
 	chmod 755 -R $ROOT/toolchain/*
