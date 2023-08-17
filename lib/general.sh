@@ -83,14 +83,16 @@ prepare_host()
                         gcc automake make binfmt-support flex \
                         lib32z1 lib32z1-dev qemu-user-static bison \
                         dosfstools libncurses5-dev debootstrap \
-                        swig libpython2.7-dev libssl-dev python-minimal dos2unix lib32stdc++6;
+                        swig libpython2.7-dev libssl-dev python-minimal dos2unix \
+			lib32gcc-s1 lib32stdc++6;
         else
                 apt-get -y --no-install-recommends --fix-missing install \
                         libarchive-tools mtools u-boot-tools pv bc \
                         gcc automake make binfmt-support flex \
                         lib32z1 lib32z1-dev qemu-user-static bison \
                         dosfstools libncurses5-dev debootstrap \
-                        swig libpython2.7-dev libssl-dev python2-minimal dos2unix lib32stdc++6;
+                        swig libpython2.7-dev libssl-dev python2-minimal dos2unix \
+			lib32gcc-s1 lib32stdc++6;
         fi
 
 	# Prepare toolchains
