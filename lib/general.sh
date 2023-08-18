@@ -84,7 +84,7 @@ prepare_host()
                         lib32z1 lib32z1-dev qemu-user-static bison \
                         dosfstools libncurses5-dev debootstrap \
                         swig libpython2.7-dev libssl-dev python-minimal dos2unix \
-			lib32gcc-s1 lib32stdc++6;
+			lib32gcc-s1 lib32stdc++6 gcc-arm-linux-gnueabi;
         else
                 apt-get -y --no-install-recommends --fix-missing install \
                         libarchive-tools mtools u-boot-tools pv bc \
