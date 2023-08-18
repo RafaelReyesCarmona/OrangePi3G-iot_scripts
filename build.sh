@@ -201,7 +201,7 @@ case "${PLATFORM}" in
 		esac
 
 		ARCH="arm"
-		CHIP="MT6735"
+		CHIP="MT6572"
 		TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
 		#TOOLS=$ROOT/toolchain/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-
 		KERNEL_NAME="linux3.4.67"
