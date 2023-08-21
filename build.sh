@@ -203,9 +203,10 @@ case "${PLATFORM}" in
 		ARCH="arm"
 		CHIP="MT6572"
   		if [ $( grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
-			TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
+			TOOLS=/usr/bin/arm-none-eabi-
 		else
-  			TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
+  			#TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
+     			TOOLS=$ROOT/toolchain/arm-eabi-4.8-toolchain/bin/arm-eabi-
      		fi
 		#TOOLS=$ROOT/toolchain/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-
 		KERNEL_NAME="linux3.4.67"
