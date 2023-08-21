@@ -59,9 +59,9 @@ compile_uboot()
 		"OrangePi3G-iot")
 			set -x
 			export CROSS_COMPILE=$TOOLS
-			export TOOLCHAIN_PREFIX=$TOOLS
+			export TOOLCHAIN_PREFIX=arm-linux-androideabi-
    			if [ $( grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
-				export TOOLCHAIN_PATH=$ROOT/toolchain/arm-linux-androideabi-4.7/bin
+				export TOOLCHAIN_PATH=/usr/bin
 			else
    				export TOOLCHAIN_PATH=$ROOT/toolchain/arm-linux-androideabi-4.7/bin
        			fi
