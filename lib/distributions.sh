@@ -540,7 +540,7 @@ nameserver 8.8.8.8
 EOF
 	read -p 'SSID: ' SSID
 	read -sp 'Password: ' SSID_PASS
-	cat > "$DEST/etc/network/interfaces" <<EOF
+	cat > "$DEST/etc/network/interfaces.d/wlan0" <<EOF
 auto wlan0
 iface wlan0 inet dhcp
 wpa-ssid ${SSID}
