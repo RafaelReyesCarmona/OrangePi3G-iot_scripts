@@ -174,23 +174,22 @@ do_chroot() {
        if [ $ARCH = "arm64" ]; then
                cp /usr/bin/qemu-aarch64-static "$DEST/usr/bin"
        elif [ $ARCH = "arm" ]; then
-               cp /usr/bin/qemu-arm-static "$DEST/usr/bin"
+               	cp /usr/bin/qemu-arm-static "$DEST/usr/bin"
        fi
 
-	cmd="$@"	
- 
- 	if [[ ! -f /proc/sys/fs/binfmt_misc/arm ]]; then
-		echo ':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:CF' > /proc/sys/fs/binfmt_misc/register
-	fi
+	cmd="$@"
 
-	chroot "$DEST" mount -t proc proc /proc 
-	chroot "$DEST" mount -t sysfs sys /sys
+ 	# if [[ ! -f /proc/sys/fs/binfmt_misc/arm ]]; then
+		# echo ':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:CF' > /proc/sys/fs/binfmt_misc/register
+	# fi
+	chroot "$DEST" mount -t proc proc /proc || true
+	chroot "$DEST" mount -t sysfs sys /sys || true
 	chroot "$DEST" $cmd
 	chroot "$DEST" umount /sys
 	chroot "$DEST" umount /proc
 
-	echo -1 > /proc/sys/fs/binfmt_misc/arm
- 
+	# echo -1 > /proc/sys/fs/binfmt_misc/arm
+
 	# Clean up
 	rm -f "$DEST/usr/bin/qemu-arm-static"
 }
@@ -445,7 +444,7 @@ prepare_rootfs_server()
 	if [ "$DISTRO" = "xenial" -o "$DISTRO" = "bionic" ]; then
 		DEB=ubuntu
 		DEBUSER=orangepi
-		EXTRADEBS="software-properties-common libjpeg8-dev usbmount zram-config ubuntu-minimal net-tools"
+		EXTRADEBS="avahi-daemon software-properties-common libjpeg8-dev usbmount zram-config ubuntu-minimal net-tools"
 		ADDPPACMD=
 		DISPTOOLCMD=
 	elif [ "$DISTRO" = "sid" -o "$DISTRO" = "stretch" -o "$DISTRO" = "stable" ]; then
@@ -468,11 +467,11 @@ locale-gen en_US.UTF-8
 apt-get -y update
 apt-get -y install dosfstools curl xz-utils iw rfkill ifupdown
 apt-get -y install wpasupplicant openssh-server alsa-utils
-apt-get -y install rsync u-boot-tools vim
+apt-get -y install rsync u-boot-tools vim nano
 apt-get -y install parted network-manager git autoconf gcc libtool
 apt-get -y install libsysfs-dev pkg-config libdrm-dev xutils-dev hostapd
 apt-get -y install dnsmasq apt-transport-https man subversion
-apt-get -y install imagemagick libv4l-dev cmake bluez
+apt-get -y install imagemagick libv4l-dev cmake bluez libffi-dev
 apt-get -y install $EXTRADEBS
 
 apt-get install -f
@@ -490,6 +489,8 @@ usermod -a -G sudo $DEBUSER
 usermod -a -G adm $DEBUSER
 usermod -a -G video $DEBUSER
 usermod -a -G plugdev $DEBUSER
+usermod -a -G tty $DEBUSER
+usermod -a -G dialout $DEBUSER
 apt-get -y autoremove
 apt-get clean
 EOF
@@ -518,8 +519,8 @@ server_setup()
 		:
 	else
 	cat > "$DEST/etc/network/interfaces.d/eth0" <<EOF
-auto eth0
-iface eth0 inet dhcp
+# auto eth0
+# iface eth0 inet dhcp
 EOF
 	fi
 	cat > "$DEST/etc/hostname" <<EOF
@@ -539,7 +540,24 @@ EOF
 	cat > "$DEST/etc/resolv.conf" <<EOF
 nameserver 8.8.8.8
 EOF
-
+	read -p 'SSID: ' SSID
+	read -sp 'Password: ' SSID_PASS
+	cat > "$DEST/etc/network/interfaces" <<EOF
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+#source-directory /etc/network/interfaces.d
+auto wlan0
+iface wlan0 inet dhcp
+wpa-ssid ${SSID}
+wpa-psk ${SSID_PASS}
+dns-nameservers 8.8.8.8
+EOF
+	mkdir $DEST/etc/systemd/system/systemd-hostnamed.service.d
+	cat > "$DEST/etc/systemd/system/systemd-hostnamed.service.d/override.conf" <<EOF
+[Service]
+PrivateDevices=no
+PrivateNetwork=no
+EOF
 	do_conffile
 	add_ssh_keygen_service
 	#add_opi_python_gpio_libs

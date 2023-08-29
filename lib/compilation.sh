@@ -59,8 +59,10 @@ compile_uboot()
 		"OrangePi3G-iot")
 			set -x
 			export CROSS_COMPILE=$TOOLS
-			export TOOLCHAIN_PREFIX=$TOOLS
-			export TOOLCHAIN_PATH=$ROOT/toolchain/arm-eabi-4.7/arm-linux-androideabi-4.7/bin
+			export TOOLCHAIN_PREFIX=arm-linux-androideabi-
+			#export TOOLCHAIN_PATH=/usr/bin
+			#export TOOLCHAIN_PATH=$ROOT/toolchain/arm-eabi-4.8-toolchain/bin
+			export TOOLCHAIN_PATH=$ROOT/toolchain/arm-linux-androideabi-4.7/bin
 
 			export MTK_PROJECT
 			export TARGET_PRODUCT=$MTK_PROJECT

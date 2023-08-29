@@ -35,7 +35,7 @@ build_mtk_image()
 	
 		IMG_ROOTFS_SIZE=$(expr `du -s $DEST | awk 'END {print $1}'` + 400 \* 1024)
 		dd if=/dev/zero of=${IMAGE}/rootfs.img bs=1M count=$(expr $IMG_ROOTFS_SIZE  \/ 1024 )
-        	mkfs.ext4 -O ^metadata_csum -F -b 4096 -E stride=2,stripe-width=1024 -L rootfs ${IMAGE}/rootfs.img
+        	mkfs -O "^metadata_csum" -F -b 4096 -E stride=2,stripe-width=1024 -L rootfs ${IMAGE}/rootfs.img -t ext4
 
         	if [ ! -d /tmp/tmp ]; then
          	       mkdir -p /tmp/tmp
@@ -72,7 +72,7 @@ build_mtk_image()
 		#elif [ ${BOARD} = "3g-iot-B" ]; then
 			IMG_ROOTFS_SIZE=$(expr `du -s $DEST | awk 'END {print $1}'` + 400 \* 1024)
 			dd if=/dev/zero of=${IMAGE}/rootfs.img bs=1M count=$(expr $IMG_ROOTFS_SIZE  \/ 1024 )
-        		mkfs.ext4 -O ^metadata_csum -F -b 4096 -E stride=2,stripe-width=1024 -L rootfs ${IMAGE}/rootfs.img
+        		mkfs.ext4 -F -b 4096 -E stride=2,stripe-width=1024 -L rootfs ${IMAGE}/rootfs.img
 
 			if [ ! -d /media/tmp ]; then
 		        	mkdir -p /media/tmp

@@ -11,6 +11,7 @@ SCRIPTS="${ROOT}/scripts"
 DEST="${BUILD}/rootfs"
 UBOOT_BIN="$BUILD/uboot"
 PACK_OUT="${BUILD}/pack/"
+UPDATES="${ROOT}/updates"
 
 OS=""
 BT=""
@@ -47,6 +48,7 @@ source "${SCRIPTS}"/lib/compilation.sh
 source "${SCRIPTS}"/lib/distributions.sh
 source "${SCRIPTS}"/lib/build_image.sh
 source "${SCRIPTS}"/lib/platform/rk3399.sh
+source "${SCRIPTS}"/lib/updates.sh
 
 if [ ! -f $BUILD/.prepare_host ]; then
         prepare_host
@@ -201,8 +203,10 @@ case "${PLATFORM}" in
 		esac
 
 		ARCH="arm"
-		CHIP="MT6735"
-		TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
+		CHIP="MT6572"
+		TOOLS=/usr/bin/arm-none-eabi-
+		#TOOLS=$ROOT/toolchain/arm-eabi-4.8-toolchain/bin/arm-eabi-
+		#TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
 		#TOOLS=$ROOT/toolchain/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-
 		KERNEL_NAME="linux3.4.67"
 		;;
@@ -228,7 +232,8 @@ case "${OPTION}" in
 		compile_uboot
 		compile_kernel
 		build_rootfs
-		build_image 
+		update_rootfs
+		build_image
 
 		whiptail --title "OrangePi Build System" --msgbox "Succeed to build Image" \
 			10 40 0 --ok-button Continue
@@ -238,10 +243,11 @@ case "${OPTION}" in
 		compile_uboot
 		compile_kernel
 		build_rootfs
+		update_rootfs
 		whiptail --title "OrangePi Build System" --msgbox "Succeed to build rootfs" \
 			10 40 0 --ok-button Continue
 		;;
-	"2")	
+	"2")
 		compile_uboot
 		;;
 	"3")
