@@ -60,10 +60,18 @@ compile_uboot()
 			set -x
 			export CROSS_COMPILE=$TOOLS
 			export TOOLCHAIN_PREFIX=arm-linux-androideabi-
+<<<<<<< HEAD
 			#export TOOLCHAIN_PATH=/usr/bin
 			#export TOOLCHAIN_PATH=$ROOT/toolchain/arm-eabi-4.8-toolchain/bin
 			export TOOLCHAIN_PATH=$ROOT/toolchain/arm-linux-androideabi-4.7/bin
 
+=======
+   			if [ $( grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
+				export TOOLCHAIN_PATH=/usr/bin
+			else
+   				export TOOLCHAIN_PATH=$ROOT/toolchain/arm-linux-androideabi-4.7/bin
+       			fi
+>>>>>>> 3c137987e7b4ec8680225733ff8636512d18b9a8
 			export MTK_PROJECT
 			export TARGET_PRODUCT=$MTK_PROJECT
 			OBJ=${BUILD}/obj

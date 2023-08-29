@@ -75,7 +75,11 @@ prepare_host()
 		        exit 1
 	fi
 
+<<<<<<< HEAD
 	apt update
+=======
+ 	apt-get update
+>>>>>>> 3c137987e7b4ec8680225733ff8636512d18b9a8
 
         if [ $( grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
                 apt-get -y --no-install-recommends --fix-missing install \
@@ -83,14 +87,24 @@ prepare_host()
                         gcc automake make binfmt-support flex \
                         lib32z1 lib32z1-dev qemu-user-static bison \
                         dosfstools libncurses5-dev debootstrap \
+<<<<<<< HEAD
                         swig libpython2.7-dev libssl-dev python-minimal dos2unix lib32stdc++6 gcc-arm-none-eabi;
+=======
+                        swig libpython2.7-dev libssl-dev python-minimal dos2unix \
+			lib32gcc-s1 lib32stdc++6 gcc-arm-none-eabi gcc-arm-linux-androideabi;
+>>>>>>> 3c137987e7b4ec8680225733ff8636512d18b9a8
         else
                 apt-get -y --no-install-recommends --fix-missing install \
                         libarchive-tools mtools u-boot-tools pv bc \
                         gcc automake make binfmt-support flex \
                         lib32z1 lib32z1-dev qemu-user-static bison \
                         dosfstools libncurses5-dev debootstrap \
+<<<<<<< HEAD
                         swig libpython2.7-dev libssl-dev python2-minimal dos2unix lib32stdc++6;
+=======
+                        swig libpython2.7-dev libssl-dev python2-minimal dos2unix \
+			lib32gcc-s1 lib32stdc++6;
+>>>>>>> 3c137987e7b4ec8680225733ff8636512d18b9a8
         fi
 
 	# Prepare toolchains
