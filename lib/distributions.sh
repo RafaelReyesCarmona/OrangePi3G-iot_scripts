@@ -542,24 +542,17 @@ nameserver 8.8.8.8
 EOF
 	read -p 'SSID: ' SSID
 	read -sp 'Password: ' SSID_PASS
-<<<<<<< HEAD
 	cat > "$DEST/etc/network/interfaces" <<EOF
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Include files from /etc/network/interfaces.d:
 #source-directory /etc/network/interfaces.d
-=======
-	cat > "$DEST/etc/network/interfaces.d/wlan0" <<EOF
->>>>>>> 3c137987e7b4ec8680225733ff8636512d18b9a8
 auto wlan0
 iface wlan0 inet dhcp
 wpa-ssid ${SSID}
 wpa-psk ${SSID_PASS}
 dns-nameservers 8.8.8.8
 EOF
-<<<<<<< HEAD
 	mkdir $DEST/etc/systemd/system/systemd-hostnamed.service.d
-=======
->>>>>>> 3c137987e7b4ec8680225733ff8636512d18b9a8
 	cat > "$DEST/etc/systemd/system/systemd-hostnamed.service.d/override.conf" <<EOF
 [Service]
 PrivateDevices=no
