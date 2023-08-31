@@ -471,7 +471,7 @@ apt-get -y install rsync u-boot-tools vim nano
 apt-get -y install parted network-manager git autoconf gcc libtool
 apt-get -y install libsysfs-dev pkg-config libdrm-dev xutils-dev hostapd
 apt-get -y install dnsmasq apt-transport-https man subversion
-apt-get -y install imagemagick libv4l-dev cmake bluez libffi-dev
+apt-get -y install imagemagick libv4l-dev cmake bluez libffi-dev ffmpeg
 apt-get -y install $EXTRADEBS
 
 apt-get install -f
@@ -479,6 +479,7 @@ apt-get install -f
 apt-get -y remove --purge ureadahead
 $ADDPPACMD
 apt-get -y update
+apt-get -y upgrade
 $DISPTOOLCMD
 adduser --gecos $DEBUSER --disabled-login $DEBUSER --uid 1000
 adduser --gecos root --disabled-login root --uid 0
@@ -510,7 +511,7 @@ prepare_rootfs_desktop()
 	cd $BUILD
 	tar czf ${DISTRO}_desktop_rootfs.tar.gz rootfs
 	cd -
-				
+
 }
 
 server_setup()
