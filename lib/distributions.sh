@@ -541,8 +541,10 @@ EOF
 	cat > "$DEST/etc/resolv.conf" <<EOF
 nameserver 8.8.8.8
 EOF
-	read -p 'SSID: ' SSID
-	read -sp 'Password: ' SSID_PASS
+	#read -p 'SSID: ' SSID
+	SSID=$(whiptail --inputbox "Enter SSID" 10 30 3>&1 1>&2 2>&3)
+	#read -sp 'Password: ' SSID_PASS
+        SSID_PASS=$(whiptail --passwordbox "Enter password" 10 30 3>&1 1>&2 2>&3)
 	cat > "$DEST/etc/network/interfaces" <<EOF
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Include files from /etc/network/interfaces.d:

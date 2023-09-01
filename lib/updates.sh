@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Funcions : update_rootfs
+# Funcions : update_rootfs, update_wifi
 
 update_rootfs() {
 	# Add qemu emulation.
@@ -36,11 +36,19 @@ EOF
 	chroot "$DEST" /update_post-install_openssl
 	rm "$DEST/update_post-install_openssl"
 
+	cp $UPDATES/init-zram-swapping-orangepi3g "$DEST/usr/bin"
+	chmod +x "$DEST/usr/bin/init-zram-swapping-orangepi3g"
+	cp $UPDATES/end-zram-swapping-orangepi3g "$DEST/usr/bin"
+	chmod +x "$DEST/usr/bin/end-zram-swapping-orangepi3g"
+
 	cat > "$DEST/update_post-install_systemctl" <<EOF
 # Post-install update systemctl services
 #systemctl disable networking.service
 #systemctl disable NetworkManager-wait-online.service
 systemctl disable zram-config.service
+sed -i 's/init-zram-swapping/init-zram-swapping-orangepi3g/g' /lib/systemd/system/zram-config.service
+sed -i 's/end-zram-swapping/end-zram-swapping-orangepi3g/g' /lib/systemd/system/zram-config.service
+systemctl enable zram-config.service
 EOF
         chmod +x "$DEST/update_post-install_systemctl"
         chroot "$DEST" /update_post-install_systemctl
@@ -54,4 +62,40 @@ EOF
 	# Clean up
 	rm -f "$DEST/usr/bin/qemu-arm-static"
 
+}
+
+update_wifi(){
+IMAGE_UPDATE="${BUILD}/images"
+cd ${IMAGE_UPDATE}
+for f in */; do
+    if [ -f ${IMAGE_UPDATE}/${f}rootfs.img ]; then
+	# Get SSID and PASSWORD of Wifi conection.
+	#read -p 'SSID: ' SSID
+        SSID=$(whiptail --inputbox "Enter SSID" 10 30 3>&1 1>&2 2>&3)
+        #read -sp 'Password: ' SSID_PASS
+        SSID_PASS=$(whiptail --passwordbox "Enter password" 10 30 3>&1 1>&2 2>&3)
+
+        if [ ! -d /media/tmp ]; then
+           mkdir -p /media/tmp
+        fi
+
+	mount -t ext4 ${IMAGE_UPDATE}/${f}rootfs.img /media/tmp
+
+        #Add Wifi info into Image
+        sed -i "s/^wpa-ssid .*$/wpa-ssid $SSID/g" /media/tmp/etc/network/interfaces
+        sed -i "s/^wpa-psk .*$/wpa-psk $SSID_PASS/g" /media/tmp/etc/network/interfaces
+        umount /media/tmp
+
+        #cd ${BUILD}/images
+	IMAGE_FILE=$(echo $f | sed 's#/##g')
+	if [ -f ${IMAGE_FILE}.tar.gz ]; then
+		rm ${IMAGE_FILE}.tar.gz
+	fi
+        tar -cvzf ${IMAGE_FILE}.tar.gz ${IMAGE_FILE}
+    else
+	whiptail --title "OrangePi Build System" --msgbox "Error changing wifi info." \
+                        10 40 0 --ok-button Continue
+	exit -1
+    fi
+done
 }

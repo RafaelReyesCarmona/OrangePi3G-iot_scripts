@@ -233,6 +233,7 @@ OPTION=$(whiptail --title "OrangePi Build System" \
 	"2"   "Build Uboot" \
 	"3"   "Build Linux" \
 	"4"   "Build Module only" \
+	"5"   "Update WIFI" \
 	3>&1 1>&2 2>&3)
 
 case "${OPTION}" in 
@@ -258,26 +259,37 @@ case "${OPTION}" in
 		;;
 	"2")
 		compile_uboot
+		whiptail --title "OrangePi Build System" --msgbox "Succeed to build Uboot" \
+                        10 40 0 --ok-button Continue
 		;;
 	"3")
 		compile_kernel
 		compile_module
+		whiptail --title "OrangePi Build System" --msgbox "Succeed to build Linux" \
+                        10 40 0 --ok-button Continue
 		;;
 	"4")
 		compile_module
+		whiptail --title "OrangePi Build System" --msgbox "Succeed to build Linux Modules" \
+                        10 40 0 --ok-button Continue
 		;;
 	"5")
-		[ "${PLATFORM}" = "OrangePiRK3399" ] && uboot_check || boot_check
-		kernel_update
+		update_wifi
+		whiptail --title "OrangePi Build System" --msgbox "Succeed to update Wifi Info" \
+                        10 40 0 --ok-button Continue
 		;;
-	"6")
-		rootfs_check
-		modules_update
-		;;
-	"7")
-		uboot_check
-		uboot_update
-		;;
+#	"5")
+#		[ "${PLATFORM}" = "OrangePiRK3399" ] && uboot_check || boot_check
+#		kernel_update
+#		;;
+#	"6")
+#		rootfs_check
+#		modules_update
+#		;;
+#	"7")
+#		uboot_check
+#		uboot_update
+#		;;
 	*)
 		whiptail --title "OrangePi Build System" \
 			--msgbox "Pls select correct option" 10 50 0
