@@ -90,10 +90,10 @@ prepare_host()
                 apt-get -y --no-install-recommends --fix-missing install \
                         libarchive-tools mtools u-boot-tools pv bc \
                         gcc automake make binfmt-support flex \
-                        lib32z1 lib32z1-dev qemu-user-static qemu-system-arm bison \
+                        lib32z1 lib32z1-dev qemu-user-static bison \
                         dosfstools libncurses5-dev debootstrap \
                         swig libpython2.7-dev libssl-dev python-minimal dos2unix \
-			lib32gcc1 lib32stdc++6 gcc-arm-linux-gnueabi g++-arm-linux-gnueabi;
+			lib32gcc1 lib32stdc++6 gcc-arm-linux-gnueabi g++-arm-linux-gnueabigcc-arm-none-eabi gcc-arm-linux-androideabi;
 
         fi
 
