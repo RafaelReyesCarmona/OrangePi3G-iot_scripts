@@ -77,7 +77,7 @@ prepare_host()
 
  	apt-get update
 
-        if [ $(grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
+#        if [ $(grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
                 apt-get -y --no-install-recommends --fix-missing install \
                         bsdtar mtools u-boot-tools pv bc \
                         gcc automake make binfmt-support flex \
@@ -86,19 +86,19 @@ prepare_host()
                         swig libpython2.7-dev libssl-dev python-minimal dos2unix \
 			lib32gcc1 lib32stdc++6 gcc-arm-none-eabi gcc-arm-linux-androideabi;
 
-        else
-                apt-get -y --no-install-recommends --fix-missing install \
-                        libarchive-tools mtools u-boot-tools pv bc \
-                        gcc automake make binfmt-support flex \
-                        lib32z1 lib32z1-dev qemu-user-static qemu-system-arm bison \
-                        dosfstools libncurses5-dev debootstrap \
-                        swig libpython2.7-dev libssl-dev python-minimal dos2unix \
-			lib32gcc1 lib32stdc++6 gcc-arm-linux-gnueabi g++-arm-linux-gnueabi;
+ #       else
+ #               apt-get -y --no-install-recommends --fix-missing install \
+ #                       libarchive-tools mtools u-boot-tools pv bc \
+ #                       gcc automake make binfmt-support flex \
+ #                       lib32z1 lib32z1-dev qemu-user-static qemu-system-arm bison \
+ #                       dosfstools libncurses5-dev debootstrap \
+ #                       swig libpython2.7-dev libssl-dev python-minimal dos2unix \
+#			lib32gcc1 lib32stdc++6 gcc-arm-linux-gnueabi g++-arm-linux-gnueabi;
 
-        fi
+ #       fi
 
 	# Prepare toolchains
-	chmod 755 -R $ROOT/toolchain/*
+	#chmod 755 -R $ROOT/toolchain/*
 
 	if [ ! -d "${BUILD}" ]; then
 		mkdir -p "${BUILD}"

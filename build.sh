@@ -205,7 +205,7 @@ case "${PLATFORM}" in
 		ARCH="arm"
 		CHIP="MT6572"
 
-		#TOOLS=/usr/bin/arm-none-eabi-
+		TOOLS=/usr/bin/arm-none-eabi-
 		#TOOLS=$ROOT/toolchain/arm-eabi-4.8-toolchain/bin/arm-eabi-
 		#TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
 
@@ -216,7 +216,6 @@ case "${PLATFORM}" in
      		#	TOOLS=$ROOT/toolchain/arm-eabi-4.8-toolchain/bin/arm-eabi-
      		#fi
 
-		TOOLS=$ROOT/toolchain/arm-eabi-4.7/bin/arm-eabi-
 		KERNEL_NAME="linux3.4.67"
 		;;
 	*)
@@ -234,6 +233,7 @@ OPTION=$(whiptail --title "OrangePi Build System" \
 	"3"   "Build Linux" \
 	"4"   "Build Module only" \
 	"5"   "Update WIFI" \
+	"6"   "Update Rootfs(linux)"\
 	3>&1 1>&2 2>&3)
 
 case "${OPTION}" in 
@@ -278,6 +278,13 @@ case "${OPTION}" in
 		whiptail --title "OrangePi Build System" --msgbox "Succeed to update Wifi Info" \
                         10 40 0 --ok-button Continue
 		;;
+	"6")
+		update_rootfs
+                build_image
+                whiptail --title "OrangePi Build System" --msgbox "Succeed to update RootFS after Kernel Compilation" \
+                        10 40 0 --ok-button Continue
+                ;;
+
 #	"5")
 #		[ "${PLATFORM}" = "OrangePiRK3399" ] && uboot_check || boot_check
 #		kernel_update

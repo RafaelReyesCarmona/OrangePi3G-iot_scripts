@@ -62,12 +62,12 @@ compile_uboot()
 			export TOOLCHAIN_PREFIX=arm-linux-androideabi-
 
    			#if [ $( grep -E '^VERSION_ID=' /etc/os-release | awk -F '"' '{print $2}') == "16.04" ]; then
-			#	export TOOLCHAIN_PATH=/usr/bin
+				export TOOLCHAIN_PATH=/usr/bin
 			#else
    			#	export TOOLCHAIN_PATH=/home/orangepi/OrangePi3G-iot/toolchain/arm-linux-androideabi-4.7/bin
        			#fi
 
-			export TOOLCHAIN_PATH=$ROOT/toolchain/arm-linux-androideabi-4.7/bin/
+			#export TOOLCHAIN_PATH=$ROOT/toolchain/arm-linux-androideabi-4.7/bin/
 			export MTK_PROJECT
 			export TARGET_PRODUCT=$MTK_PROJECT
 			OBJ=${BUILD}/obj
